@@ -1,32 +1,42 @@
 import { MoreVert } from '@material-ui/icons'
 import './post.css'
+import { Users } from '../../dummyData'
+import { useState } from 'react'
 
-const Post = () => {
+
+const Post = ({ post }) => {
+  const [like, setLike] = useState(post.like);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const likeHandler =() => {
+    setLike(isLiked ? like - 1 : like + 1);
+    setIsLiked(!isLiked);
+  }
   return (
     <div className="post" >
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            <img src="/assets/person/9.jpeg" alt="" className="postProfileImg" />
-            <span className="postUsername">Usoroh</span>
-            <span className="postDate">2 mins ago</span>
+            <img src={Users.filter((u) => u.id === post?.userId)[0].profilePicture} alt="" className="postProfileImg" />
+            <span className="postUsername">{Users.filter((u) => u.id === post?.userId)[0].username}</span>
+            <span className="postDate">{post.date}</span>
           </div>
           <div className="postTopRight">
             <MoreVert className="postTopRightIcon" />
           </div>
         </div>
         <div className="postCenter">
-          <span className="postText">This is my first post</span>
-          <img src="assets/post/10.jpeg" alt="" className="postImg" />
+          <span className="postText">{post?.desc}</span>
+          <img src={post.photo} alt="" className="postImg" />
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-            <img src="assets/like.png" alt="" className='likeIcon' />
-            <img src="assets/heart.png" alt="" className="likeIcon" />
-            <span className="postLikeCounter">12 people like it</span>
+            <img src="assets/like.png" alt="" className='likeIcon' onClick={likeHandler} />
+            <img src="assets/heart.png" alt="" className="likeIcon" onClick={likeHandler} />
+            <span className="postLikeCounter">{like} people like it</span>
           </div>
           <div className="postBottomRight">
-            <span className="postCommentText">Comments</span>
+            <span className="postCommentText">{post.comment} comments</span>
           </div>
         </div>
       </div>
@@ -35,3 +45,8 @@ const Post = () => {
 }
 
 export default Post
+
+
+
+
+//on line 20, the post has a question mark because it is not all data fetched from d dummydata dat has desc
